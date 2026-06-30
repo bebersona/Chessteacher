@@ -1,0 +1,27 @@
+{
+  "json_files": [
+    "global.json",
+    "STATIC_VALIDATION.json",
+    "assets/lessons/sample-lessons.json",
+    "assets/puzzles/sample-puzzles.json",
+    "assets/openings/sample-openings.json"
+  ],
+  "xml_files": [
+    "src/ChessTeacher.Core/ChessTeacher.Core.csproj",
+    "src/ChessTeacher.Engine/ChessTeacher.Engine.csproj",
+    "src/ChessTeacher.Data/ChessTeacher.Data.csproj",
+    "src/ChessTeacher.Teaching/ChessTeacher.Teaching.csproj",
+    "src/ChessTeacher.App/ChessTeacher.App.csproj",
+    "src/ChessTeacher.Tests/ChessTeacher.Tests.csproj",
+    "Directory.Build.props",
+    "Directory.Packages.props"
+  ],
+  "csharp_files": 27,
+  "missing_required_files": [],
+  "notes": [
+    "JSON parsed successfully.",
+    "MSBuild XML parsed successfully.",
+    "ZIP integrity is checked after creation.",
+    "No application, engine, compiler, tests, or installer was executed."
+  ]
+}

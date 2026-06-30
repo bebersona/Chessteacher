@@ -1,0 +1,13 @@
+bin/
+obj/
+publish/
+artifacts/
+*.user
+*.suo
+*.cache
+*.log
+.vs/
+.idea/
+engines/stockfish/stockfish.exe
+engines/stockfish/download/
+installer/Output/
