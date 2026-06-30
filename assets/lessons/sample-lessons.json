@@ -1,0 +1,35 @@
+[
+  {
+    "id": "opening-principles-001",
+    "category": "Opening principles",
+    "title": "Develop, control the centre, castle",
+    "description": "A first lesson on coordinating pieces safely.",
+    "sections": [
+      "Use central pawns to gain space and open lines.",
+      "Develop knights and bishops before moving the same piece repeatedly.",
+      "Castle once the centre is stable and the path is clear."
+    ],
+    "exampleFen": "rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1",
+    "demonstrationMoves": ["e7e5", "g1f3", "b8c6", "f1b5"],
+    "tasks": [
+      {
+        "prompt": "Choose a developing move for White.",
+        "fen": "rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq - 0 2",
+        "acceptedMoves": ["g1f3", "b1c3"]
+      }
+    ]
+  },
+  {
+    "id": "basic-tactics-001",
+    "category": "Basic tactics",
+    "title": "Knight forks",
+    "description": "Learn how one knight can attack two valuable targets.",
+    "sections": [
+      "Knights attack in an L-shape and can jump over pieces.",
+      "A fork is strongest when it attacks the king and another valuable piece."
+    ],
+    "exampleFen": "4k3/8/3n4/8/8/8/8/3QK3 b - - 0 1",
+    "demonstrationMoves": [],
+    "tasks": []
+  }
+]

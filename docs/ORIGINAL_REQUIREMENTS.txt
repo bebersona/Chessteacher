@@ -1,0 +1,1227 @@
+Build a complete downloadable Windows chess-teacher application.
+
+## 1. Main goal
+
+Create an installable chess training application similar in purpose to Chess.com analysis and lessons.
+
+The application must allow users to:
+
+* Play chess against the computer
+* Play both sides on a free analysis board
+* Analyze completed games
+* Receive move evaluations
+* See best-move arrows
+* Get explanations for mistakes
+* Practice tactical puzzles
+* Study openings
+* Track progress
+* Save games locally
+* Import and export PGN files
+
+The program must be a real desktop application, not a website.
+
+## 2. Required technology
+
+Use:
+
+* C#
+* .NET 8 or newer stable version
+* Avalonia UI
+* Stockfish as the chess engine
+* UCI protocol for communication with Stockfish
+* SQLite for saved data
+* JSON for lessons and settings
+* MVVM architecture
+* Windows x64 as the first supported platform
+
+Do not use:
+
+* Python
+* Flask
+* Django
+* Electron
+* Browser-based HTML as the main application
+* A local web server
+* Node.js as a runtime dependency
+* Unity unless a future 3D mode is added
+
+The final user must not need to install Python, Node.js or additional developer software.
+
+## 3. Stability requirements
+
+The application must:
+
+* Never automatically open or run after generation
+* Never automatically launch a browser
+* Never automatically start Stockfish during installation
+* Never freeze the interface while Stockfish is calculating
+* Run all engine calculations asynchronously
+* Allow engine analysis to be cancelled
+* Stop the Stockfish process safely when the application closes
+* Prevent multiple unnecessary Stockfish processes
+* Recover gracefully if Stockfish crashes
+* Show clear error messages
+* Avoid excessive RAM and CPU use
+* Limit engine threads and hash memory through settings
+* Save data safely without corrupting the database
+
+Do not preview, execute or auto-open the generated application during development delivery.
+
+Only create the complete project files and build instructions.
+
+## 4. Project structure
+
+Use a clean structure similar to:
+
+ChessTeacher/
+
+* ChessTeacher.sln
+* src/
+
+  * ChessTeacher.App/
+  * ChessTeacher.Core/
+  * ChessTeacher.Engine/
+  * ChessTeacher.Data/
+  * ChessTeacher.Teaching/
+  * ChessTeacher.Tests/
+* assets/
+
+  * pieces/
+  * sounds/
+  * icons/
+  * lessons/
+  * openings/
+* engines/
+
+  * stockfish/
+* installer/
+* docs/
+
+## 5. Architecture
+
+Use MVVM.
+
+Separate the program into:
+
+* User interface
+* Chess rules
+* Stockfish communication
+* Teaching logic
+* Database logic
+* Settings
+* Lessons
+* Statistics
+* File import and export
+
+Do not place all code inside one file.
+
+Use:
+
+* Interfaces
+* Services
+* Dependency injection
+* Async and await
+* CancellationToken
+* Clear exception handling
+* Logging
+* Unit tests
+
+## 6. Main screens
+
+Create these screens:
+
+### Home screen
+
+Show:
+
+* Continue training
+* Play against computer
+* Analyze a game
+* Free analysis board
+* Puzzles
+* Lessons
+* Openings
+* Progress
+* Recent games
+* Settings
+
+### Play screen
+
+Include:
+
+* Chessboard
+* Player names
+* Clocks
+* Move list
+* Evaluation bar
+* Captured pieces
+* Undo button when allowed
+* Resign button
+* Offer draw button
+* New game button
+* Hint button
+* Board flip button
+* Engine difficulty selector
+
+### Analysis screen
+
+Include:
+
+* Chessboard
+* Move list
+* Evaluation bar
+* Best line
+* Best-move arrow
+* Alternative moves
+* Move classification
+* Previous and next move buttons
+* Start and stop analysis
+* Engine depth
+* Analysis progress
+* Explanation panel
+* Export report button
+
+### Puzzle screen
+
+Include:
+
+* Puzzle position
+* Side to move
+* Correct and incorrect feedback
+* Hint system
+* Retry button
+* Next puzzle
+* Puzzle rating
+* Tactical theme
+* Streak
+* Accuracy statistics
+
+### Lesson screen
+
+Include:
+
+* Lesson categories
+* Lesson text
+* Interactive board
+* Demonstration moves
+* Exercises
+* Checkpoints
+* Completion tracking
+* Previous and next lesson buttons
+
+### Opening explorer
+
+Include:
+
+* Opening name
+* ECO code
+* Main lines
+* Move frequency
+* Win, draw and loss percentages when data is available
+* Personal performance
+* Practice mode
+* Opening repertoire saving
+
+### Progress screen
+
+Include:
+
+* Games played
+* Win rate
+* Puzzle accuracy
+* Puzzle rating
+* Average centipawn loss
+* Blunders per game
+* Mistakes per game
+* Best-performing openings
+* Weak tactical themes
+* Lesson completion
+* Recent activity
+
+### Settings screen
+
+Include:
+
+* Board theme
+* Piece style
+* Sound volume
+* Animation speed
+* Engine strength
+* Engine depth
+* Engine threads
+* Hash memory
+* Analysis time
+* Auto-save
+* Coordinates
+* Legal move highlights
+* Best-move arrows
+* Dark and light theme
+
+## 7. Chessboard requirements
+
+The chessboard must support:
+
+* Drag-and-drop movement
+* Click-to-move
+* Legal move highlighting
+* Selected-square highlighting
+* Last-move highlighting
+* Check highlighting
+* Promotion selection
+* Castling
+* En passant
+* Checkmate
+* Stalemate
+* Threefold repetition
+* Fifty-move rule
+* Insufficient material
+* Board flipping
+* Coordinates
+* Smooth but lightweight animations
+* Move arrows
+* Colored square annotations
+
+Do not allow illegal moves.
+
+## 8. Chess rule system
+
+Implement or use a reliable C# chess rules library.
+
+The application must correctly handle:
+
+* Legal move generation
+* Check detection
+* Checkmate detection
+* Stalemate
+* Castling rights
+* En passant
+* Pawn promotion
+* Draw rules
+* FEN parsing
+* FEN generation
+* SAN notation
+* UCI move notation
+* PGN parsing
+* PGN generation
+* Move history
+* Undo and redo
+* Position validation
+
+The graphical board must not depend on Stockfish for determining whether a move is legal.
+
+## 9. Stockfish integration
+
+Create a dedicated Stockfish service.
+
+It must:
+
+* Start Stockfish as a child process
+* Communicate through standard input and output
+* Send UCI commands
+* Read output asynchronously
+* Detect when Stockfish is ready
+* Support cancellation
+* Restart after failure
+* Close cleanly
+* Never block the UI thread
+
+Support these UCI commands:
+
+* uci
+* isready
+* ucinewgame
+* position startpos
+* position fen
+* moves
+* go depth
+* go movetime
+* stop
+* quit
+* setoption
+
+Read and parse:
+
+* bestmove
+* ponder
+* info depth
+* score cp
+* score mate
+* multipv
+* nodes
+* nps
+* pv
+
+## 10. Engine settings
+
+Allow settings for:
+
+* Skill Level
+* Threads
+* Hash
+* MultiPV
+* Move time
+* Search depth
+* Ponder
+* Engine strength
+
+Provide safe defaults, such as:
+
+* Threads: 2
+* Hash: 128 MB
+* MultiPV: 3
+* Analysis depth: 16
+* Move time: 1 second
+
+Do not use all available CPU threads by default.
+
+## 11. Computer opponent
+
+Create several difficulty levels.
+
+Example levels:
+
+* Beginner
+* Easy
+* Intermediate
+* Advanced
+* Expert
+* Master
+
+Difficulty may be controlled with:
+
+* Stockfish Skill Level
+* Limited move time
+* Limited depth
+* Random choice among strong candidate moves
+* Intentional inaccuracies at lower levels
+
+Lower levels should feel human and should not always play the best engine move.
+
+## 12. Game analysis
+
+After a game, analyze every move.
+
+For each move calculate:
+
+* Evaluation before the move
+* Evaluation after the move
+* Best engine move
+* Played move
+* Centipawn loss
+* Best continuation
+* Tactical consequences
+* Whether mate was missed
+* Whether a forced mate was allowed
+
+Classify moves as:
+
+* Brilliant
+* Great
+* Best
+* Excellent
+* Good
+* Book
+* Inaccuracy
+* Mistake
+* Blunder
+* Missed win
+* Forced move
+
+Do not copy Chess.com’s private algorithm or branding.
+
+Create an original move-classification system.
+
+## 13. Move-classification logic
+
+Use centipawn loss as one factor.
+
+Suggested initial thresholds:
+
+* Best: loss below 0.15 pawns
+* Excellent: loss below 0.35 pawns
+* Good: loss below 0.75 pawns
+* Inaccuracy: loss below 1.50 pawns
+* Mistake: loss below 3.00 pawns
+* Blunder: loss of 3.00 pawns or more
+
+Improve the classification using:
+
+* Mate score changes
+* Change from winning to equal
+* Change from equal to losing
+* Material loss
+* Missed tactical opportunities
+* Only legal or forced move
+* Sacrifice detection
+* Difficulty of finding the move
+
+Thresholds must be configurable.
+
+## 14. Average centipawn loss
+
+Calculate average centipawn loss separately for White and Black.
+
+Use:
+
+Average centipawn loss =
+Total centipawn loss divided by number of analyzed moves
+
+Ignore forced moves when appropriate.
+
+Cap extreme mate-score conversions to prevent unrealistic averages.
+
+## 15. Evaluation bar
+
+Create a vertical evaluation bar.
+
+It must:
+
+* Show White and Black advantage
+* Animate smoothly
+* Display pawn evaluation
+* Display mate values
+* Update asynchronously
+* Avoid rapid visual flickering
+* Clamp extreme evaluations visually
+
+Example displays:
+
+* +0.35
+* -1.70
+* M3
+* -M2
+
+## 16. Best-line display
+
+Display:
+
+* Best move
+* Principal variation
+* Alternative candidate moves
+* Evaluation for each line
+* Search depth
+* Engine status
+
+Use MultiPV to display multiple lines.
+
+Translate UCI engine moves into readable SAN notation.
+
+## 17. Teaching system
+
+The teacher must explain moves in understandable language.
+
+Explain concepts such as:
+
+* Development
+* King safety
+* Controlling the centre
+* Piece activity
+* Hanging pieces
+* Forks
+* Pins
+* Skewers
+* Discovered attacks
+* Double attacks
+* Deflection
+* Removing the defender
+* Back-rank threats
+* Passed pawns
+* Weak squares
+* Pawn structure
+* Open files
+* Isolated pawns
+* Doubled pawns
+* Endgame king activity
+* Opposition
+* Rook activity
+* Queen trades
+* Material advantage
+
+Avoid explanations that only say:
+
+* “Stockfish prefers this move.”
+* “This move is better.”
+
+The explanation should say why the move is better.
+
+## 18. Explanation engine
+
+Create rule-based explanations first.
+
+The system should inspect:
+
+* Material changes
+* Attacked pieces
+* Defended pieces
+* King safety
+* Development
+* Centre control
+* Pawn structure
+* Open files and diagonals
+* Tactical motifs
+* Check and mate threats
+* Mobility
+* Passed pawns
+
+Example explanation:
+
+“Your move leaves the bishop undefended. Black can capture it on the next move. Moving the bishop to b5 would develop a piece, create a pin and prepare castling.”
+
+Do not require an online AI service for basic explanations.
+
+Design the architecture so an optional AI explanation service can be added later.
+
+## 19. Tactical detection
+
+Detect common tactical themes:
+
+* Fork
+* Pin
+* Skewer
+* Discovered attack
+* Double check
+* Back-rank mate
+* Removing the defender
+* Deflection
+* Attraction
+* Overloading
+* Zwischenzug
+* Sacrifice
+* Hanging piece
+* Trapped piece
+* Mate threat
+
+Store detected themes with analyzed moves.
+
+## 20. Opening system
+
+Support:
+
+* ECO opening codes
+* Opening names
+* Main variations
+* Opening mistakes
+* Personal repertoire
+* Opening practice
+* Position recognition
+
+Store opening data locally.
+
+When a user is still following known theory, classify the move as “Book.”
+
+Do not label a move as a mistake only because another book move is slightly stronger.
+
+## 21. Puzzle system
+
+Puzzles must contain:
+
+* FEN
+* Correct move sequence
+* Side to move
+* Tactical theme
+* Difficulty
+* Explanation
+* Source information when required
+
+Puzzle features:
+
+* Rating system
+* Streak
+* Hints
+* Retry
+* Success percentage
+* Theme filtering
+* Difficulty filtering
+* Spaced repetition
+* Review failed puzzles
+
+## 22. Lesson system
+
+Create lesson categories:
+
+* Chess rules
+* Opening principles
+* Basic tactics
+* Advanced tactics
+* Strategy
+* Pawn structures
+* Endgames
+* Calculation
+* Game analysis
+
+Each lesson should support:
+
+* Title
+* Description
+* Explanation sections
+* Example positions
+* Demonstration moves
+* Interactive tasks
+* Questions
+* Completion status
+* Score
+
+Store lessons in JSON so new lessons can be added without recompiling the whole application.
+
+## 23. Database
+
+Use SQLite.
+
+Create tables for:
+
+* Users
+* Games
+* Moves
+* Evaluations
+* Puzzles
+* PuzzleAttempts
+* Lessons
+* LessonProgress
+* Openings
+* OpeningRepertoire
+* Statistics
+* Settings
+* ActivityHistory
+
+Use migrations or a clear database initialization system.
+
+## 24. Saved-game data
+
+For every game save:
+
+* Date
+* White player
+* Black player
+* Result
+* Time control
+* Starting FEN
+* PGN
+* Opening name
+* ECO code
+* Average centipawn loss
+* Number of best moves
+* Number of inaccuracies
+* Number of mistakes
+* Number of blunders
+* Analysis completion status
+
+## 25. PGN support
+
+Support:
+
+* Importing PGN files
+* Exporting individual games
+* Exporting analyzed games
+* Reading PGN headers
+* Reading comments
+* Reading variations when possible
+* Preserving metadata
+* Handling invalid files safely
+
+Allow drag-and-drop PGN import.
+
+## 26. FEN support
+
+Allow users to:
+
+* Paste a FEN
+* Copy the current FEN
+* Validate a FEN
+* Start analysis from a FEN
+* Create a custom position
+
+Show a useful error when the FEN is invalid.
+
+## 27. Time controls
+
+Support:
+
+* Unlimited
+* Bullet
+* Blitz
+* Rapid
+* Classical
+* Custom time
+* Increment
+* No-clock training mode
+
+Computer thinking must not freeze the clock or interface.
+
+## 28. User progress
+
+Track:
+
+* Total games
+* Wins
+* Losses
+* Draws
+* White results
+* Black results
+* Opening performance
+* Tactical performance
+* Puzzle rating
+* Puzzle accuracy
+* Lesson completion
+* Average centipawn loss
+* Blunder frequency
+* Improvement over time
+
+## 29. Charts
+
+Create lightweight charts for:
+
+* Rating progress
+* Puzzle progress
+* Average centipawn loss
+* Blunders per game
+* Games played
+* Opening results
+* Tactical weaknesses
+
+Do not load extremely large datasets into memory unnecessarily.
+
+## 30. User interface style
+
+Create a modern interface inspired by professional chess applications.
+
+Use:
+
+* Clean navigation
+* Dark theme by default
+* Responsive layout
+* Rounded panels
+* Clear typography
+* Consistent spacing
+* Minimal visual clutter
+* Accessible contrast
+* Tooltips
+* Loading indicators
+* Empty-state messages
+* Keyboard shortcuts
+
+Do not copy Chess.com logos, branding, exact colors or proprietary interface assets.
+
+## 31. Sound system
+
+Include optional sounds for:
+
+* Piece move
+* Capture
+* Check
+* Castling
+* Promotion
+* Game start
+* Game end
+* Correct puzzle
+* Incorrect puzzle
+
+Allow sound to be disabled.
+
+Use only original or properly licensed sound files.
+
+## 32. Assets
+
+Include properly licensed or original:
+
+* Chess piece images
+* Application icon
+* Board textures
+* Sound files
+* Lesson diagrams
+
+Clearly document all third-party licences.
+
+## 33. Stockfish licensing
+
+Stockfish is GPL-licensed.
+
+The distributed application must include:
+
+* Stockfish licence notice
+* Stockfish copyright information
+* Exact Stockfish version
+* Source-code offer or source-code location required by the licence
+* A clear statement that Stockfish is a separate engine component
+
+Do not present Stockfish as original proprietary code.
+
+Review the GPL requirements before distribution.
+
+## 34. Error handling
+
+Handle these situations:
+
+* Stockfish executable missing
+* Stockfish fails to start
+* Invalid FEN
+* Invalid PGN
+* Database unavailable
+* Corrupt saved settings
+* Insufficient file permissions
+* Unsupported operating system
+* Engine timeout
+* Analysis cancellation
+* Unexpected application shutdown
+
+Errors must be understandable to normal users.
+
+## 35. Logging
+
+Create local logs for:
+
+* Application startup
+* Engine startup
+* Engine crashes
+* Database errors
+* Import failures
+* Unhandled exceptions
+
+Do not store passwords or unnecessary personal data.
+
+Add a button to open the logs folder.
+
+## 36. Autosave and recovery
+
+Automatically save:
+
+* Current game
+* Current lesson
+* Puzzle progress
+* Settings
+* Analysis progress when practical
+
+After an unexpected crash, offer to restore the unfinished game.
+
+## 37. Performance
+
+The application must:
+
+* Open quickly
+* Keep the UI responsive
+* Avoid loading all games at startup
+* Use database pagination
+* Cache piece assets
+* Reuse board controls
+* Debounce repeated engine requests
+* Cancel outdated analysis requests
+* Dispose processes and streams
+* Avoid memory leaks
+
+## 38. Accessibility
+
+Include:
+
+* Keyboard navigation
+* Visible focus indicators
+* Scalable interface
+* Optional high-contrast board
+* Adjustable piece size
+* Screen-reader-friendly labels where practical
+* Option to disable animations
+* Color-independent move indicators
+
+## 39. Keyboard shortcuts
+
+Suggested shortcuts:
+
+* Ctrl+N: New game
+* Ctrl+O: Open PGN
+* Ctrl+S: Save or export
+* Ctrl+Z: Undo
+* Ctrl+Y: Redo
+* Left Arrow: Previous move
+* Right Arrow: Next move
+* Space: Start or stop analysis
+* F: Flip board
+* H: Hint
+* Esc: Cancel current action
+
+## 40. Testing
+
+Create unit tests for:
+
+* Legal move generation
+* Castling
+* En passant
+* Promotion
+* Checkmate
+* Stalemate
+* Draw detection
+* FEN parsing
+* PGN parsing
+* SAN notation
+* UCI parsing
+* Evaluation parsing
+* Move classification
+* Average centipawn loss
+* Database saving
+* Settings loading
+
+Create integration tests for:
+
+* Starting Stockfish
+* Sending positions
+* Receiving best moves
+* Cancelling analysis
+* Recovering from an engine crash
+
+## 41. Build requirements
+
+Provide:
+
+* Complete solution file
+* All source-code files
+* Required NuGet package list
+* Build script
+* Publish script
+* Installer script
+* README
+* Licence file
+* Third-party notices
+* Troubleshooting guide
+
+The application must compile without manually editing paths.
+
+## 42. Publishing
+
+Publish as:
+
+* Windows x64
+* Release build
+* Self-contained
+* No Python dependency
+* No separately installed .NET runtime required
+* Ready for installation
+
+Use a command similar to:
+
+dotnet publish -c Release -r win-x64 --self-contained true
+
+Use single-file publishing only if it does not interfere with bundled assets, SQLite or Stockfish.
+
+It is acceptable for Stockfish and data files to remain beside the main executable.
+
+## 43. Installer
+
+Create an installer using Inno Setup, WiX or MSIX.
+
+The installer must:
+
+* Install the application
+* Install Stockfish
+* Install required assets
+* Create a Start Menu shortcut
+* Optionally create a desktop shortcut
+* Support clean uninstall
+* Preserve user data during updates
+* Display licence notices
+* Not automatically launch the application unless the user explicitly selects that option
+
+Expected output:
+
+ChessTeacherSetup.exe
+
+## 44. User-data location
+
+Store user data in an appropriate folder such as:
+
+%LocalAppData%\ChessTeacher\
+
+Store there:
+
+* SQLite database
+* Settings
+* Logs
+* Imported games
+* Autosaves
+* Cached analysis
+
+Do not write changing user data into Program Files.
+
+## 45. Security
+
+The application must:
+
+* Work offline
+* Avoid unnecessary network access
+* Validate imported files
+* Avoid executing content from PGN or lesson files
+* Sanitize paths
+* Avoid command injection when starting Stockfish
+* Use fixed and validated engine paths
+* Avoid downloading executable updates silently
+
+## 46. Optional future online features
+
+Prepare the architecture for later additions such as:
+
+* Account login
+* Cloud saving
+* Multiplayer
+* Online leaderboards
+* AI-generated explanations
+* Online opening database
+* Game sharing
+* Coach dashboard
+
+Do not make these online services required for the first version.
+
+## 47. Development phases
+
+### Phase 1: Core chess application
+
+Complete:
+
+* Project setup
+* Main navigation
+* Chessboard
+* Legal moves
+* New game
+* Move history
+* FEN
+* PGN
+* Save and load
+
+### Phase 2: Stockfish
+
+Complete:
+
+* UCI process
+* Engine startup
+* Position analysis
+* Best move
+* Evaluation
+* Principal variation
+* Cancellation
+* Engine settings
+
+### Phase 3: Play against computer
+
+Complete:
+
+* Difficulty levels
+* Clocks
+* Results
+* Resignation
+* Draw handling
+* Game saving
+
+### Phase 4: Game review
+
+Complete:
+
+* Analyze all moves
+* Evaluation graph
+* Move labels
+* Best arrows
+* Alternative moves
+* Average centipawn loss
+
+### Phase 5: Teaching
+
+Complete:
+
+* Rule-based explanations
+* Tactical detection
+* Positional explanations
+* Suggestions
+* Summary report
+
+### Phase 6: Training content
+
+Complete:
+
+* Puzzles
+* Lessons
+* Opening practice
+* Progress tracking
+
+### Phase 7: Polish
+
+Complete:
+
+* Themes
+* Sounds
+* Animations
+* Accessibility
+* Error messages
+* Logging
+* Recovery
+* Performance improvements
+
+### Phase 8: Distribution
+
+Complete:
+
+* Release build
+* Self-contained publishing
+* Installer
+* Licences
+* Documentation
+* Final testing
+
+## 48. Required final delivery
+
+Deliver:
+
+* The complete source project
+* The compiled Windows application
+* ChessTeacherSetup.exe
+* Stockfish integration
+* Database initialization
+* Example puzzles
+* Example lessons
+* Example opening data
+* Application icon
+* README
+* Build instructions
+* Installer instructions
+* Licence documentation
+* Test project
+
+Do not provide only partial snippets.
+
+Do not provide pseudocode instead of functioning code.
+
+Do not place the entire project inside one source file.
+
+Do not automatically run, preview or open the application.
+
+Create the files first and provide them for manual downloading and opening.
+
+## 49. First-version priority
+
+For the first working version, prioritize:
+
+1. Stable application startup
+2. Working chessboard
+3. Correct legal moves
+4. Stockfish connection
+5. Play against computer
+6. Game analysis
+7. Move classifications
+8. Basic teaching explanations
+9. Saving games
+10. Installable Windows release
+
+Do not delay the working version by attempting advanced multiplayer, 3D graphics or cloud services first.
+
+## 50. Definition of completion
+
+The project is complete only when a normal Windows user can:
+
+1. Download ChessTeacherSetup.exe
+2. Install it
+3. Open the application
+4. Start a game
+5. Move pieces normally
+6. Play against Stockfish
+7. Finish or resign the game
+8. Analyze the game
+9. See move evaluations
+10. Read explanations
+11. Save the game
+12. Close and reopen the program
+13. Find the saved game and progress
+
+The application must achieve this without requiring Python, Node.js, command-line tools or programming knowledge.

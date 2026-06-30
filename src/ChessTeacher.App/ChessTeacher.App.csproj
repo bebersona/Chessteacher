@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <AssemblyName>ChessTeacher</AssemblyName>
+    <RootNamespace>ChessTeacher.App</RootNamespace>
+    <ApplicationIcon>Assets\app.ico</ApplicationIcon>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishTrimmed>false</PublishTrimmed>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChessTeacher.Core\ChessTeacher.Core.csproj" />
+    <ProjectReference Include="..\ChessTeacher.Engine\ChessTeacher.Engine.csproj" />
+    <ProjectReference Include="..\ChessTeacher.Data\ChessTeacher.Data.csproj" />
+    <ProjectReference Include="..\ChessTeacher.Teaching\ChessTeacher.Teaching.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+    <None Include="..\..\assets\**\*" Link="assets\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\engines\stockfish\**\*" Link="engines\stockfish\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="..\..\THIRD_PARTY_NOTICES.md" Link="THIRD_PARTY_NOTICES.md" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

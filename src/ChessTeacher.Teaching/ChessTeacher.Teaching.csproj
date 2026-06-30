@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><AssemblyName>ChessTeacher.Teaching</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChessTeacher.Core\ChessTeacher.Core.csproj" />
+    <ProjectReference Include="..\ChessTeacher.Engine\ChessTeacher.Engine.csproj" />
+  </ItemGroup>
+</Project>

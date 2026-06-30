@@ -1,0 +1,124 @@
+<Window
+    x:Class="ChessTeacher.App.Views.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:ChessTeacher.App.ViewModels"
+    x:DataType="vm:MainWindowViewModel"
+    Title="ChessTeacher"
+    Width="1280"
+    Height="820"
+    MinWidth="1080"
+    MinHeight="720"
+    WindowStartupLocation="CenterScreen">
+
+  <Grid ColumnDefinitions="220,*,340">
+    <Border Grid.Column="0" Background="#161A1F" Padding="14">
+      <Grid RowDefinitions="Auto,*,Auto">
+        <TextBlock Text="♞ ChessTeacher" FontSize="22" FontWeight="Bold" Margin="8,12,8,20" />
+        <ItemsControl Grid.Row="1" ItemsSource="{Binding Navigation}">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <Button Classes="nav" Content="{Binding Name}" Command="{Binding Command}" />
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Border Grid.Row="2" Classes="panel">
+          <StackPanel Spacing="5">
+            <TextBlock Text="Offline first" FontWeight="Bold" />
+            <TextBlock Text="Games, settings, puzzles, lessons, and progress stay on this computer."
+                       TextWrapping="Wrap" FontSize="12" Foreground="#AEB7C2" />
+          </StackPanel>
+        </Border>
+      </Grid>
+    </Border>
+
+    <ScrollViewer Grid.Column="1">
+      <StackPanel Margin="22" Spacing="14">
+        <Grid ColumnDefinitions="*,Auto">
+          <StackPanel>
+            <TextBlock Text="{Binding CurrentScreen}" FontSize="28" FontWeight="Bold" />
+            <TextBlock Text="{Binding Status}" Foreground="#B6C1CD" FontSize="14" />
+          </StackPanel>
+          <StackPanel Grid.Column="1" Orientation="Horizontal">
+            <Button Classes="action" Content="New" Command="{Binding NewGameCommand}" />
+            <Button Classes="action" Content="Undo" Command="{Binding UndoCommand}" />
+            <Button Classes="action" Content="Redo" Command="{Binding RedoCommand}" />
+            <Button Classes="action" Content="Flip" Command="{Binding FlipCommand}" />
+          </StackPanel>
+        </Grid>
+
+        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="18">
+          <Border Classes="panel" Padding="10">
+            <ItemsControl ItemsSource="{Binding Squares}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <UniformGrid Rows="8" Columns="8" />
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+              <ItemsControl.ItemTemplate>
+                <DataTemplate x:DataType="vm:BoardSquareViewModel">
+                  <Button Width="72" Height="72" Padding="0" CornerRadius="0"
+                          Background="{Binding Background}" Command="{Binding ClickCommand}">
+                    <Grid>
+                      <TextBlock Text="{Binding Glyph}" FontFamily="Segoe UI Symbol"
+                                 FontSize="42" Foreground="{Binding Foreground}"
+                                 HorizontalAlignment="Center" VerticalAlignment="Center" />
+                      <TextBlock Text="{Binding Coordinate}" FontSize="9" Foreground="#505962"
+                                 Margin="4" HorizontalAlignment="Left" VerticalAlignment="Bottom" />
+                    </Grid>
+                  </Button>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </Border>
+
+          <StackPanel Grid.Column="1" Spacing="12">
+            <Border Classes="panel">
+              <StackPanel Spacing="10">
+                <Grid ColumnDefinitions="*,Auto">
+                  <TextBlock Text="Coach" FontSize="18" FontWeight="Bold" />
+                  <TextBlock Grid.Column="1" Text="{Binding Evaluation}" FontSize="20" FontWeight="Bold" />
+                </Grid>
+                <TextBlock Text="{Binding Feedback}" TextWrapping="Wrap" MinHeight="72" />
+                <WrapPanel>
+                  <Button Classes="action" Content="Hint" Command="{Binding HintCommand}" />
+                  <Button Classes="action" Content="Analyze" Command="{Binding AnalyzeCommand}" />
+                  <Button Classes="action" Content="Stop" Command="{Binding StopAnalysisCommand}" />
+                  <Button Classes="action" Content="Computer move" Command="{Binding ComputerMoveCommand}" />
+                  <Button Classes="action" Content="Save" Command="{Binding SaveCommand}" />
+                </WrapPanel>
+                <Button Classes="action" Content="Toggle computer / free board"
+                        Command="{Binding ToggleComputerCommand}" />
+                <TextBlock Text="{Binding EngineStatus}" Foreground="#AEB7C2" TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+
+            <Border Classes="panel">
+              <StackPanel Spacing="8">
+                <TextBlock Text="Best line and alternatives" FontWeight="Bold" />
+                <TextBlock Text="{Binding BestLine}" TextWrapping="Wrap" FontFamily="Consolas" />
+                <ItemsControl ItemsSource="{Binding CandidateLines}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                      <TextBlock Text="{Binding}" FontFamily="Consolas" FontSize="12"
+                                 Margin="0,3" TextWrapping="Wrap" />
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Grid>
+      </StackPanel>
+    </ScrollViewer>
+
+    <Border Grid.Column="2" Background="#161A1F" Padding="16">
+      <Grid RowDefinitions="Auto,*,Auto,*" RowSpacing="10">
+        <TextBlock Text="Move list" FontSize="18" FontWeight="Bold" />
+        <ListBox Grid.Row="1" ItemsSource="{Binding MoveHistory}" Background="#111418" />
+        <TextBlock Grid.Row="2" Text="Recent games" FontSize="18" FontWeight="Bold" Margin="0,12,0,0" />
+        <ListBox Grid.Row="3" ItemsSource="{Binding RecentGames}" Background="#111418" />
+      </Grid>
+    </Border>
+  </Grid>
+</Window>

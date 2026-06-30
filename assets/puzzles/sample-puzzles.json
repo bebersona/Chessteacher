@@ -1,0 +1,22 @@
+[
+  {
+    "id": "mate-in-one-001",
+    "fen": "6k1/5ppp/8/8/8/8/5PPP/3Q2K1 w - - 0 1",
+    "sideToMove": "white",
+    "solution": ["d1d8"],
+    "theme": "mate in one",
+    "rating": 700,
+    "explanation": "Qd8 is checkmate: the back-rank king is boxed in by its own pawns and the queen controls the escape squares.",
+    "source": "Original ChessTeacher example"
+  },
+  {
+    "id": "knight-fork-001",
+    "fen": "1q3k2/8/8/2N5/8/8/8/6K1 w - - 0 1",
+    "sideToMove": "white",
+    "solution": ["c5d7"],
+    "theme": "knight fork",
+    "rating": 800,
+    "explanation": "Nd7+ checks the king on f8 and simultaneously attacks the queen on b8.",
+    "source": "Original ChessTeacher example"
+  }
+]

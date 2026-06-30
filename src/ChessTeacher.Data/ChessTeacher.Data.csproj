@@ -1,0 +1,8 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><AssemblyName>ChessTeacher.Data</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChessTeacher.Core\ChessTeacher.Core.csproj" />
+    <PackageReference Include="Microsoft.Data.Sqlite" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+  </ItemGroup>
+</Project>

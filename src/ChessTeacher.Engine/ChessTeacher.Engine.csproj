@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><AssemblyName>ChessTeacher.Engine</AssemblyName></PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChessTeacher.Core\ChessTeacher.Core.csproj" />
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+  </ItemGroup>
+</Project>
